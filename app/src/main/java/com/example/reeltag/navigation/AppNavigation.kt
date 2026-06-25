@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.reeltag.ui.components.PlaceholderScreen
 import com.example.reeltag.ui.instruction.InstructionScreen
 import com.example.reeltag.ui.landing.LandingScreen
+import com.example.reeltag.ui.reels.ReelsScreen
 
 @Composable
 fun AppNavigation() {
@@ -52,37 +53,53 @@ fun AppNavigation() {
 
         composable(Screen.Reels.route) {
 
-            PlaceholderScreen("Reels Screen")
+            ReelsScreen(
+
+                onCommentClick = {
+                    navController.navigate(Screen.Comment.route)
+                }
+
+            )
 
         }
 
         composable(Screen.Comment.route) {
 
-            PlaceholderScreen("Comment Screen")
+            PlaceholderScreen(
+                title = "Comment Bottom Sheet"
+            )
 
         }
 
         composable(Screen.Search.route) {
 
-            PlaceholderScreen("Search Screen")
+            PlaceholderScreen(
+                title = "Search Screen"
+            )
 
         }
 
         composable(Screen.Related.route) {
 
-            PlaceholderScreen("Related Content Screen")
+            PlaceholderScreen(
+                title = "Related Content Screen"
+            )
 
         }
 
         composable(Screen.Result.route) {
 
-            PlaceholderScreen("Result Screen")
+            PlaceholderScreen(
+                title = "Result Screen"
+            )
 
         }
 
         composable(Screen.Analysis.route) {
 
-            PlaceholderScreen("Analysis Screen")
+            PlaceholderScreen(
+                title = "Analysis Screen"
+            )
 
         }
 
