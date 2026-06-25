@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.reeltag.ui.components.PlaceholderScreen
+import com.example.reeltag.ui.instruction.InstructionScreen
 import com.example.reeltag.ui.landing.LandingScreen
 
 @Composable
@@ -39,7 +40,13 @@ fun AppNavigation() {
 
         composable(Screen.Instruction.route) {
 
-            PlaceholderScreen("Instruction Screen")
+            InstructionScreen(
+
+                onStartClick = {
+                    navController.navigate(Screen.Reels.route)
+                }
+
+            )
 
         }
 
