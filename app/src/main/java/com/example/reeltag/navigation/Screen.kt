@@ -12,7 +12,13 @@ sealed class Screen(val route: String) {
 
     data object Search : Screen("search")
 
-    data object Related : Screen("related")
+    object Related : Screen("related/{tag}") {
+
+        fun createRoute(tag: String): String {
+            return "related/$tag"
+        }
+
+    }
 
     data object Result : Screen("result")
 
