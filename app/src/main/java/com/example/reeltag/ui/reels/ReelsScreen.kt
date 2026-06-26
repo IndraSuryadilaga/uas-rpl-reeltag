@@ -20,6 +20,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.reeltag.ui.components.VideoPlayer
 import com.example.reeltag.ui.comment.CommentBottomSheet
 import java.util.Locale
+import com.example.reeltag.util.SessionMode
+import com.example.reeltag.util.UsabilitySessionManager
 
 @Composable
 fun ReelsScreen(
@@ -29,6 +31,17 @@ fun ReelsScreen(
 
     val showComments = remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsState()
+
+    val sessionMode by UsabilitySessionManager
+        .sessionMode
+        .collectAsState()
+
+    val isReelTagMode =
+        sessionMode == SessionMode.REELTAG
+
+    LaunchedEffect(sessionMode) {
+        println("SESSION MODE = $sessionMode")
+    }
 
     val reel = uiState.reel ?: return
 
@@ -83,9 +96,11 @@ fun ReelsScreen(
         if (showComments.value) {
             CommentBottomSheet(
                 reelId = reel.id,
-                isReelTagMode = true,
+                isReelTagMode = isReelTagMode,
                 onDismiss = { showComments.value = false },
-                onTagClick = { tag -> /* Handle klik tag di sini */ }
+                onTagClick = { tag ->
+                    // TODO
+                }
             )
         }
 

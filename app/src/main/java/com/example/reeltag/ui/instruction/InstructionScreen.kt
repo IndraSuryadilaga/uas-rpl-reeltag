@@ -23,17 +23,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.reeltag.util.SessionMode
+import com.example.reeltag.util.UsabilitySessionManager
 
 @Composable
 fun InstructionScreen(
     onStartClick: () -> Unit,
-    isReelTagMode: Boolean = false,
     viewModel: InstructionViewModel = viewModel()
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
 
-    val instruction = viewModel.getInstruction(isReelTagMode)
+    val sessionMode by UsabilitySessionManager
+        .sessionMode
+        .collectAsState()
+
+    val isReelTagMode =
+        sessionMode == SessionMode.REELTAG
+
+    val instruction =
+        viewModel.getInstruction(isReelTagMode)
 
     Column(
         modifier = Modifier

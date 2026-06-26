@@ -8,6 +8,7 @@ import com.example.reeltag.ui.components.PlaceholderScreen
 import com.example.reeltag.ui.instruction.InstructionScreen
 import com.example.reeltag.ui.landing.LandingScreen
 import com.example.reeltag.ui.reels.ReelsScreen
+import com.example.reeltag.util.UsabilitySessionManager
 
 @Composable
 fun AppNavigation() {
@@ -24,11 +25,19 @@ fun AppNavigation() {
             LandingScreen(
 
                 onInstagramOriginalClick = {
+
+                    UsabilitySessionManager.startOriginalSession()
+
                     navController.navigate(Screen.Instruction.route)
+
                 },
 
                 onReelTagClick = {
+
+                    UsabilitySessionManager.startReelTagSession()
+
                     navController.navigate(Screen.Instruction.route)
+
                 },
 
                 onAnalysisClick = {

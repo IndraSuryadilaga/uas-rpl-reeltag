@@ -4,33 +4,33 @@ import com.example.reeltag.data.model.Comment
 
 object CommentDummyData {
 
-    val trendingTags = listOf("Travel Jepang", "iPhone 17", "Coldplay")
+    // Trending tags in English
+    val trendingTags = listOf("Coldplay Jakarta", "Music Of The Spheres", "Coldplay Live")
 
     val comments = listOf(
         Comment(
             id = 1,
             reelId = 1,
-            username = "User A",
-            content = "This reminds me of my trip to Travel Jepang",
-            likes = 24,
+            username = "chris_fan",
+            content = "The atmosphere at Coldplay Jakarta was absolutely magical!",
+            likes = 1250,
             timestamp = "2h"
         ),
         Comment(
             id = 2,
             reelId = 1,
-            username = "User B",
-            content = "I can't wait for the iPhone 17 launch! The camera specs look insane.",
-            likes = 152,
+            username = "concert_enthusiast",
+            content = "The visuals for Music Of The Spheres were mind-blowing. Best night ever!",
+            likes = 890,
             timestamp = "4h"
         ),
         Comment(
             id = 3,
             reelId = 1,
-            username = "User C",
-            content = "Have you guys seen the new Coldplay tour? The visuals are incredible!",
-            likes = 89,
-            timestamp = "5h"
+            username = "globetrotter",
+            content = "I'm still recovering from how amazing Coldplay Live was in Jakarta.",
+            likes = 450,
+            timestamp = "6h"
         )
     )
-
 }
