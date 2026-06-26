@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.reeltag.ui.components.VideoPlayer
 
 @Composable
 fun ReelsScreen(
@@ -44,20 +45,10 @@ fun ReelsScreen(
             .background(Color.Black)
     ) {
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.DarkGray),
-            contentAlignment = Alignment.Center
-        ) {
-
-            Text(
-                text = "Dummy Video",
-                color = Color.White,
-                style = MaterialTheme.typography.headlineMedium
-            )
-
-        }
+        VideoPlayer(
+            videoUri = reel.videoUri,
+            modifier = Modifier.fillMaxSize()
+        )
 
         Column(
             modifier = Modifier

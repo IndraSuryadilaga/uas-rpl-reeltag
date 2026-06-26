@@ -11,7 +11,8 @@ object ReelsDummyData {
         music = "Coldplay • A Sky Full of Stars",
         likes = 1200000,
         shares = 56000,
-        bookmarks = 42000
+        bookmarks = 42000,
+        videoUri = "android.resource://com.example.reeltag/raw/reel1"
     )
 
 }
