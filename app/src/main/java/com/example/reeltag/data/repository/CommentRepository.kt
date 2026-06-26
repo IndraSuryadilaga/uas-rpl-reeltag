@@ -9,4 +9,9 @@ class CommentRepository {
         return CommentDummyData.comments.filter { it.reelId == reelId }
     }
 
+    // Fungsi ini yang sebelumnya terlewat
+    fun getTrendingTags(): List<String> {
+        return CommentDummyData.trendingTags
+    }
+
 }

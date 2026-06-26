@@ -16,6 +16,8 @@ data class Reel(
 
     val bookmarks: Int,
 
-    val videoUri: String
+    val videoUri: String,
+
+    val tags: List<String> = emptyList()
 
 )

@@ -10,6 +10,8 @@ data class Comment(
 
     val content: String,
 
-    val likes: Int
+    val likes: Int,
+
+    val timestamp: String
 
 )
