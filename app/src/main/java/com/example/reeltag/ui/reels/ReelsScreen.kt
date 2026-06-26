@@ -25,7 +25,7 @@ import com.example.reeltag.util.UsabilitySessionManager
 
 @Composable
 fun ReelsScreen(
-    onCommentClick: () -> Unit = {},
+    onTagClick: (String) -> Unit = {},
     viewModel: ReelsViewModel = viewModel()
 ) {
 
@@ -95,12 +95,23 @@ fun ReelsScreen(
 
         if (showComments.value) {
             CommentBottomSheet(
+
                 reelId = reel.id,
+
                 isReelTagMode = isReelTagMode,
-                onDismiss = { showComments.value = false },
+
+                onDismiss = {
+                    showComments.value = false
+                },
+
                 onTagClick = { tag ->
-                    // TODO
+
+                    showComments.value = false
+
+                    onTagClick(tag)
+
                 }
+
             )
         }
 

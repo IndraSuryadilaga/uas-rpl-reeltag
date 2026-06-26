@@ -8,6 +8,7 @@ import com.example.reeltag.ui.components.PlaceholderScreen
 import com.example.reeltag.ui.instruction.InstructionScreen
 import com.example.reeltag.ui.landing.LandingScreen
 import com.example.reeltag.ui.reels.ReelsScreen
+import com.example.reeltag.ui.related.RelatedScreen
 import com.example.reeltag.util.UsabilitySessionManager
 
 @Composable
@@ -64,12 +65,17 @@ fun AppNavigation() {
 
             ReelsScreen(
 
-                onCommentClick = {
-                    navController.navigate(Screen.Comment.route)
+                onTagClick = { tag ->
+
+                    navController.navigate(
+
+                        Screen.Related.createRoute(tag)
+
+                    )
+
                 }
 
             )
-
         }
 
         composable(Screen.Comment.route) {
@@ -88,10 +94,21 @@ fun AppNavigation() {
 
         }
 
-        composable(Screen.Related.route) {
+        composable(
+            route = Screen.Related.route
+        ) { backStackEntry ->
 
-            PlaceholderScreen(
-                title = "Related Content Screen"
+            val tag =
+                backStackEntry.arguments?.getString("tag") ?: ""
+
+            RelatedScreen(
+
+                selectedTag = tag,
+
+                onClose = {
+                    navController.popBackStack()
+                }
+
             )
 
         }
