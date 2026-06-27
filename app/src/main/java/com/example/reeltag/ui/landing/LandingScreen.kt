@@ -26,9 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-// PERBAIKAN: Import UsabilitySessionManager
-import com.example.reeltag.util.UsabilitySessionManager
-
 @Composable
 fun LandingScreen(
     onInstagramOriginalClick: () -> Unit,
@@ -66,8 +63,6 @@ fun LandingScreen(
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                // PERBAIKAN: Set mode dan mulai tracker untuk Original
-                UsabilitySessionManager.startOriginalSession()
                 onInstagramOriginalClick()
             }
         ) {
@@ -79,8 +74,6 @@ fun LandingScreen(
         OutlinedButton(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                // PERBAIKAN: Set mode dan mulai tracker untuk ReelTag
-                UsabilitySessionManager.startReelTagSession()
                 onReelTagClick()
             }
         ) {
@@ -129,7 +122,10 @@ fun LandingScreen(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = uiState.analysisEnabled,
-                    onClick = onAnalysisClick,
+                    onClick = {
+                        // Tambahkan navigasi ke layar analisis
+                        onAnalysisClick()
+                    },
                     colors = ButtonDefaults.buttonColors()
                 ) {
                     Text("Lihat Hasil Analisis")

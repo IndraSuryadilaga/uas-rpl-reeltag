@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.reeltag.ui.analysis.AnalysisScreen
 import com.example.reeltag.ui.components.PlaceholderScreen
 import com.example.reeltag.ui.instruction.InstructionScreen
 import com.example.reeltag.ui.landing.LandingScreen
@@ -11,6 +12,7 @@ import com.example.reeltag.ui.reels.ReelsScreen
 import com.example.reeltag.ui.related.RelatedScreen
 import com.example.reeltag.ui.search.SearchScreen
 import com.example.reeltag.util.UsabilitySessionManager
+import com.example.reeltag.util.UsabilityTracker
 
 @Composable
 fun AppNavigation() {
@@ -75,6 +77,7 @@ fun AppNavigation() {
                 },
 
                 onSearchClick = {
+                    UsabilityTracker.increaseClick()
 
                     navController.navigate(Screen.Search.route)
 
@@ -147,11 +150,7 @@ fun AppNavigation() {
         }
 
         composable(Screen.Analysis.route) {
-
-            PlaceholderScreen(
-                title = "Analysis Screen"
-            )
-
+            AnalysisScreen()
         }
 
     }

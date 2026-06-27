@@ -24,6 +24,20 @@ class SearchViewModel(
         _uiState.update {
             it.copy(
                 query = query,
+                isSearching = false,
+                searchResults = if (query.isBlank()) emptyList() else it.searchResults,
+                hashtags = if (query.isBlank()) emptyList() else it.hashtags
+            )
+        }
+    }
+
+    fun submitSearch() {
+        val query =
+            _uiState.value.query.trim()
+
+        _uiState.update {
+            it.copy(
+                query = query,
                 isSearching = query.isNotBlank(),
                 searchResults = repository.search(query),
                 hashtags = repository.getRelatedHashtags(query)
@@ -48,7 +62,8 @@ class SearchViewModel(
             it.copy(
                 query = keyword,
                 isSearching = true,
-                searchResults = repository.search(keyword)
+                searchResults = repository.search(keyword),
+                hashtags = repository.getRelatedHashtags(keyword)
             )
         }
     }

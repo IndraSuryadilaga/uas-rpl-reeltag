@@ -20,7 +20,7 @@ object CommentDummyData {
             id = 2,
             reelId = 1,
             username = "concert_enthusiast",
-            content = "The visuals for Music Of The Spheres were mind-blowing. Best night ever!",
+            content = "Coldplay's Music Of The Spheres concert in Jakarta was unreal. The crowd, lights, and fireworks were unforgettable!",
             likes = 890,
             timestamp = "4h"
         ),

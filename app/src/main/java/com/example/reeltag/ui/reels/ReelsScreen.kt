@@ -27,6 +27,7 @@ import com.example.reeltag.util.UsabilitySessionManager
 // Added Imports
 import com.example.reeltag.navigation.Screen
 import com.example.reeltag.ui.components.BottomNavigationBar
+import com.example.reeltag.util.UsabilityTracker
 
 @Composable
 fun ReelsScreen(
@@ -88,7 +89,10 @@ fun ReelsScreen(
                 ReelAction(
                     icon = Icons.AutoMirrored.Filled.Chat,
                     count = uiState.comments.size.toString(),
-                    onClick = { showComments.value = true }
+                    onClick = {
+                        UsabilityTracker.increaseClick()
+                        showComments.value = true
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))

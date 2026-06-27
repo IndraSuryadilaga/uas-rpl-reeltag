@@ -1,48 +1,40 @@
 package com.example.reeltag.ui.landing
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.lifecycle.viewModelScope
+import com.example.reeltag.data.model.UsabilityResult
+import com.example.reeltag.data.repository.UsabilityRepository
+import com.example.reeltag.util.SessionMode
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 class LandingViewModel : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LandingUiState())
-
     val uiState: StateFlow<LandingUiState> =
-        _uiState.asStateFlow()
-
-    fun completeOriginalScenario() {
-
-        _uiState.update {
-
-            it.copy(
-                originalCompleted = true,
-                analysisEnabled = it.reelTagCompleted
+        UsabilityRepository.results
+            .map(::mapResultsToUiState)
+            .distinctUntilChanged()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = LandingUiState()
             )
 
-        }
+    private fun mapResultsToUiState(results: List<UsabilityResult>): LandingUiState {
+        val originalCompleted =
+            results.any { it.mode == SessionMode.ORIGINAL }
 
-    }
+        val reelTagCompleted =
+            results.any { it.mode == SessionMode.REELTAG }
 
-    fun completeReelTagScenario() {
-
-        _uiState.update {
-
-            it.copy(
-                reelTagCompleted = true,
-                analysisEnabled = it.originalCompleted
-            )
-
-        }
-
-    }
-
-    fun resetProgress() {
-
-        _uiState.value = LandingUiState()
-
+        return LandingUiState(
+            originalCompleted = originalCompleted,
+            reelTagCompleted = reelTagCompleted,
+            analysisEnabled = true
+        )
     }
 
 }

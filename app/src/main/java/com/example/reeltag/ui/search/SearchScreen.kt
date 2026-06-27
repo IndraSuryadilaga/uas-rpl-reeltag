@@ -26,10 +26,15 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -38,6 +43,8 @@ import com.example.reeltag.ui.components.BottomNavigationBar
 import com.example.reeltag.ui.components.HashtagChip
 import com.example.reeltag.ui.components.RelatedCard
 import com.example.reeltag.ui.components.SectionTitle
+import com.example.reeltag.util.SessionMode
+import com.example.reeltag.util.UsabilitySessionManager
 import com.example.reeltag.util.UsabilityTracker
 
 @Composable
@@ -48,6 +55,56 @@ fun SearchScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
+    val sessionMode by UsabilitySessionManager
+        .sessionMode
+        .collectAsState()
+
+    val isOriginalMode =
+        sessionMode == SessionMode.ORIGINAL
+    var hasTrackedSearchFieldTap by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var hasTrackedKeywordInput by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(
+        isOriginalMode,
+        uiState.query,
+        uiState.searchResults
+    ) {
+        val isColdplaySearch =
+            uiState.query.trim().contains("coldplay", ignoreCase = true)
+
+        if (isOriginalMode && isColdplaySearch && uiState.searchResults.isNotEmpty()) {
+            UsabilityTracker.setTaskSuccess(true)
+            UsabilityTracker.finishTask()
+        }
+    }
+
+    val handleQueryChange: (String) -> Unit = { query ->
+        if (isOriginalMode && !hasTrackedKeywordInput && uiState.query.isBlank() && query.isNotBlank()) {
+            UsabilityTracker.increaseClick()
+            hasTrackedKeywordInput = true
+        }
+
+        viewModel.onQueryChange(query)
+    }
+
+    val handleSearchSubmit: () -> Unit = {
+        if (uiState.query.isNotBlank()) {
+            UsabilityTracker.increaseClick()
+        }
+
+        viewModel.submitSearch()
+    }
+
+    val handleSearchFieldFocus: () -> Unit = {
+        if (isOriginalMode && !hasTrackedSearchFieldTap) {
+            UsabilityTracker.increaseClick()
+            hasTrackedSearchFieldTap = true
+        }
+    }
 
     Scaffold(
         containerColor = Color.Black,
@@ -69,7 +126,9 @@ fun SearchScreen(
 
             SearchHeader(
                 query = uiState.query,
-                onQueryChange = viewModel::onQueryChange,
+                onQueryChange = handleQueryChange,
+                onSearchSubmit = handleSearchSubmit,
+                onSearchFieldFocus = handleSearchFieldFocus,
                 onBack = onBack
             )
 
@@ -97,7 +156,6 @@ fun SearchScreen(
                             subtitle = "${reel.views} views",
                             onClick = {
                                 UsabilityTracker.increaseClick()
-                                // Add navigation logic here
                             }
 
                         )
@@ -138,6 +196,8 @@ fun SearchScreen(
 private fun SearchHeader(
     query: String,
     onQueryChange: (String) -> Unit,
+    onSearchSubmit: () -> Unit,
+    onSearchFieldFocus: () -> Unit,
     onBack: () -> Unit
 ) {
     Row(
@@ -160,7 +220,13 @@ private fun SearchHeader(
         OutlinedTextField(
             value = query,
             onValueChange = onQueryChange,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .onFocusChanged { focusState ->
+                    if (focusState.isFocused) {
+                        onSearchFieldFocus()
+                    }
+                },
             placeholder = {
                 Text(text = "Search tag or reels...", color = Color.Gray)
             },
@@ -187,7 +253,11 @@ private fun SearchHeader(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search
             ),
-            keyboardActions = KeyboardActions()
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    onSearchSubmit()
+                }
+            )
         )
     }
 }

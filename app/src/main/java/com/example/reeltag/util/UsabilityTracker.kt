@@ -41,6 +41,8 @@ object UsabilityTracker {
         val result = UsabilityResult(
             sessionId = currentSessionId,
             mode = currentMode,
+            startTime = startTime,
+            endTime = endTime,
             timeOnTask = timeOnTaskInSeconds,
             clickCount = clickCount,
             taskSuccess = taskSuccess
