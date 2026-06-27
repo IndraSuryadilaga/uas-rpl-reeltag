@@ -9,6 +9,7 @@ import com.example.reeltag.ui.instruction.InstructionScreen
 import com.example.reeltag.ui.landing.LandingScreen
 import com.example.reeltag.ui.reels.ReelsScreen
 import com.example.reeltag.ui.related.RelatedScreen
+import com.example.reeltag.ui.search.SearchScreen
 import com.example.reeltag.util.UsabilitySessionManager
 
 @Composable
@@ -68,28 +69,25 @@ fun AppNavigation() {
                 onTagClick = { tag ->
 
                     navController.navigate(
-
                         Screen.Related.createRoute(tag)
-
                     )
+
+                },
+
+                onSearchClick = {
+
+                    navController.navigate(Screen.Search.route)
 
                 }
 
             )
+
         }
 
         composable(Screen.Comment.route) {
 
             PlaceholderScreen(
                 title = "Comment Bottom Sheet"
-            )
-
-        }
-
-        composable(Screen.Search.route) {
-
-            PlaceholderScreen(
-                title = "Search Screen"
             )
 
         }
@@ -103,20 +101,47 @@ fun AppNavigation() {
 
             RelatedScreen(
 
+                title = "Related Content",
+
                 selectedTag = tag,
+
+                showCloseButton = true,
 
                 onClose = {
                     navController.popBackStack()
+                },
+
+                onBack = {
+
+                    navController.popBackStack()
+
                 }
 
             )
 
         }
 
-        composable(Screen.Result.route) {
+        composable(Screen.Search.route) {
 
-            PlaceholderScreen(
-                title = "Result Screen"
+            SearchScreen(
+
+                onBack = {
+
+                    navController.popBackStack()
+
+                },
+
+                onReelsClick = {
+
+                    navController.navigate(Screen.Reels.route) {
+                        popUpTo(Screen.Reels.route) {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    }
+
+                }
+
             )
 
         }

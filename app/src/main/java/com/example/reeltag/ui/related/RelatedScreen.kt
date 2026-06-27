@@ -3,6 +3,9 @@ package com.example.reeltag.ui.related
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.width
+import com.example.reeltag.ui.components.RelatedCard
+import com.example.reeltag.ui.components.HashtagChip
+import com.example.reeltag.ui.components.SectionTitle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +21,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
@@ -43,8 +47,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun RelatedScreen(
+    title: String,
     selectedTag: String,
+    showCloseButton: Boolean,
     onClose: () -> Unit,
+    onBack: () -> Unit = {},
     viewModel: RelatedViewModel = viewModel()
 ) {
 
@@ -61,8 +68,11 @@ fun RelatedScreen(
     ) {
 
         Header(
+            title = title,
             tag = selectedTag,
-            onClose = onClose
+            showCloseButton = showCloseButton,
+            onClose = onClose,
+            onBack = onBack
         )
 
         HorizontalDivider(color = Color.DarkGray)
@@ -127,22 +137,8 @@ fun RelatedScreen(
 
             items(uiState.relatedHashtags) { tag ->
 
-                AssistChip(
-                    onClick = { },
-
-                    label = {
-                        Text(text = tag)
-                    },
-
-                    colors = AssistChipDefaults.assistChipColors(
-                        containerColor = Color.Transparent,
-                        labelColor = Color(0xFF38BDF8)
-                    ),
-
-                    border = AssistChipDefaults.assistChipBorder(
-                        enabled = true,
-                        borderColor = Color(0xFF38BDF8)
-                    )
+                HashtagChip(
+                    hashtag = tag
                 )
 
             }
@@ -155,8 +151,11 @@ fun RelatedScreen(
 
 @Composable
 private fun Header(
+    title: String,
     tag: String,
-    onClose: () -> Unit
+    showCloseButton: Boolean,
+    onClose: () -> Unit,
+    onBack: () -> Unit
 ) {
 
     Row(
@@ -174,7 +173,7 @@ private fun Header(
         ) {
 
             Text(
-                text = "Related Content",
+                text = title,
                 style = MaterialTheme.typography.labelMedium,
                 color = Color.Gray
             )
@@ -188,84 +187,30 @@ private fun Header(
 
         }
 
-        IconButton(
-            onClick = onClose
-        ) {
+        if (showCloseButton) {
 
-            Icon(
-                imageVector = Icons.Default.Close,
-                contentDescription = null,
-                tint = Color.White
-            )
-
-        }
-
-    }
-
-}
-
-@Composable
-private fun SectionTitle(
-    title: String
-) {
-
-    Text(
-        text = title,
-        modifier = Modifier.padding(
-            horizontal = 16.dp,
-            vertical = 12.dp
-        ),
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
-        color = Color.White
-    )
-
-}
-
-@Composable
-private fun RelatedCard(
-    title: String,
-    imageRes: Int,
-    subtitle: String
-) {
-
-    Card(
-        modifier = Modifier.width(170.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF1E1E1E)
-        )
-    ) {
-
-        Column {
-
-            Image(
-                painter = painterResource(imageRes),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp),
-                contentScale = ContentScale.Crop
-            )
-
-            Column(
-                modifier = Modifier.padding(12.dp)
+            IconButton(
+                onClick = onClose
             ) {
 
-                Text(
-                    text = title,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    tint = Color.White
                 )
 
-                Spacer(
-                    modifier = Modifier.height(4.dp)
-                )
+            }
 
-                Text(
-                    text = subtitle,
-                    color = Color.Gray,
-                    style = MaterialTheme.typography.bodySmall
+        } else {
+
+            IconButton(
+                onClick = onBack
+            ) {
+
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null,
+                    tint = Color.White
                 )
 
             }
@@ -273,5 +218,4 @@ private fun RelatedCard(
         }
 
     }
-
 }
