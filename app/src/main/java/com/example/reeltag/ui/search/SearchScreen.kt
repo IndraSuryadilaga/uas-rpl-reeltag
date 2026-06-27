@@ -38,6 +38,7 @@ import com.example.reeltag.ui.components.BottomNavigationBar
 import com.example.reeltag.ui.components.HashtagChip
 import com.example.reeltag.ui.components.RelatedCard
 import com.example.reeltag.ui.components.SectionTitle
+import com.example.reeltag.util.UsabilityTracker
 
 @Composable
 fun SearchScreen(
@@ -93,7 +94,12 @@ fun SearchScreen(
                         RelatedCard(
                             title = reel.title,
                             imageRes = reel.imageResId,
-                            subtitle = "${reel.views} views"
+                            subtitle = "${reel.views} views",
+                            onClick = {
+                                UsabilityTracker.increaseClick()
+                                // Add navigation logic here
+                            }
+
                         )
                     }
                 }
@@ -114,7 +120,12 @@ fun SearchScreen(
                 ) {
                     items(uiState.hashtags) { hashtag ->
                         HashtagChip(
-                            hashtag = hashtag
+                            hashtag = hashtag,
+                            onClick = {
+                                // US-11: Track interaction with hashtag chip
+                                UsabilityTracker.increaseClick()
+                                // Add logic to select/search hashtag
+                            }
                         )
                     }
                 }

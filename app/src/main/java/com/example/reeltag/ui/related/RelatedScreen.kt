@@ -44,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.reeltag.util.UsabilityTracker
 
 @Composable
 fun RelatedScreen(
@@ -59,6 +60,9 @@ fun RelatedScreen(
 
     LaunchedEffect(selectedTag) {
         viewModel.loadRelatedContent(selectedTag)
+        UsabilityTracker.setTaskSuccess(true)
+        // US-11: Selesaikan sesi pelacakan
+        UsabilityTracker.finishTask()
     }
 
     Column(
@@ -87,11 +91,14 @@ fun RelatedScreen(
         ) {
 
             items(uiState.relatedReels) { reel ->
-
                 RelatedCard(
                     title = reel.title,
                     imageRes = reel.imageResId,
-                    subtitle = "${reel.views} views"
+                    subtitle = "${reel.views} views",
+                    onClick = {
+                        UsabilityTracker.increaseClick()
+                        // Tambahkan navigasi ke detail video di sini
+                    }
                 )
 
             }
@@ -134,19 +141,18 @@ fun RelatedScreen(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-
             items(uiState.relatedHashtags) { tag ->
-
                 HashtagChip(
-                    hashtag = tag
+                    hashtag = tag,
+                    onClick = {
+                        // US-11: Tambahkan tracking saat user klik hashtag terkait lainnya
+                        UsabilityTracker.increaseClick()
+                        // Tambahkan navigasi ke tag lain
+                    }
                 )
-
             }
-
         }
-
     }
-
 }
 
 @Composable

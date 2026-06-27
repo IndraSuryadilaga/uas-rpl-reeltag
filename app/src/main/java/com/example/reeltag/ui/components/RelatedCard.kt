@@ -1,6 +1,7 @@
 package com.example.reeltag.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,52 +24,56 @@ import androidx.compose.ui.unit.dp
 fun RelatedCard(
     title: String,
     imageRes: Int,
-    subtitle: String
+    subtitle: String,
+    onClick: () -> Unit = {}
 ) {
-
     Card(
-        modifier = Modifier.width(170.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF1E1E1E)
-        )
+        modifier = Modifier.clickable(onClick = onClick) // Apply to the card
     ) {
-
-        Column {
-
-            Image(
-                painter = painterResource(id = imageRes),
-                contentDescription = title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp),
-                contentScale = ContentScale.Crop
+        Card(
+            modifier = Modifier.width(170.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF1E1E1E)
             )
+        ) {
 
-            Column(
-                modifier = Modifier.padding(12.dp)
-            ) {
+            Column {
 
-                Text(
-                    text = title,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2
+                Image(
+                    painter = painterResource(id = imageRes),
+                    contentDescription = title,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp),
+                    contentScale = ContentScale.Crop
                 )
 
-                Spacer(
-                    modifier = Modifier.height(4.dp)
-                )
+                Column(
+                    modifier = Modifier.padding(12.dp)
+                ) {
 
-                Text(
-                    text = subtitle,
-                    color = Color.Gray,
-                    style = MaterialTheme.typography.bodySmall
-                )
+                    Text(
+                        text = title,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2
+                    )
+
+                    Spacer(
+                        modifier = Modifier.height(4.dp)
+                    )
+
+                    Text(
+                        text = subtitle,
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+
+                }
 
             }
 
         }
-
     }
 
 }

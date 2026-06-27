@@ -12,7 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider // Diperbarui dari Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -25,6 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+
+// PERBAIKAN: Import UsabilitySessionManager
+import com.example.reeltag.util.UsabilitySessionManager
 
 @Composable
 fun LandingScreen(
@@ -40,7 +43,6 @@ fun LandingScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
-
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -63,22 +65,26 @@ fun LandingScreen(
 
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = onInstagramOriginalClick
+            onClick = {
+                // PERBAIKAN: Set mode dan mulai tracker untuk Original
+                UsabilitySessionManager.startOriginalSession()
+                onInstagramOriginalClick()
+            }
         ) {
-
             Text("Instagram Original")
-
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = onReelTagClick
+            onClick = {
+                // PERBAIKAN: Set mode dan mulai tracker untuk ReelTag
+                UsabilitySessionManager.startReelTagSession()
+                onReelTagClick()
+            }
         ) {
-
             Text("Instagram + ReelTag")
-
         }
 
         Spacer(modifier = Modifier.height(40.dp))
@@ -108,7 +114,8 @@ fun LandingScreen(
                     completed = uiState.originalCompleted
                 )
 
-                Divider(
+                // PERBAIKAN: Menggunakan HorizontalDivider
+                HorizontalDivider(
                     modifier = Modifier.padding(vertical = 12.dp)
                 )
 
@@ -121,17 +128,11 @@ fun LandingScreen(
 
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-
                     enabled = uiState.analysisEnabled,
-
                     onClick = onAnalysisClick,
-
                     colors = ButtonDefaults.buttonColors()
-
                 ) {
-
                     Text("Lihat Hasil Analisis")
-
                 }
 
             }
@@ -144,42 +145,26 @@ fun LandingScreen(
 
 @Composable
 private fun StatusRow(
-
     title: String,
-
     completed: Boolean
-
 ) {
-
     Row(
         modifier = Modifier.fillMaxWidth(),
-
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
         Text(
             text = title,
             style = MaterialTheme.typography.bodyLarge
         )
 
         Text(
-
             text = if (completed) {
-
                 "✓ Selesai"
-
             } else {
-
                 "Belum"
-
             },
-
             style = MaterialTheme.typography.bodyLarge,
-
             fontWeight = FontWeight.SemiBold
-
         )
-
     }
-
 }

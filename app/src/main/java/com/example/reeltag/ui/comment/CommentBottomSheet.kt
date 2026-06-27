@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.reeltag.data.model.Comment
+import com.example.reeltag.util.UsabilityTracker
 
 // Warna kustom berdasarkan mockup
 val DarkSurface = Color(0xFF1E1E1E)
@@ -120,7 +121,11 @@ fun CommentBottomSheet(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(uiState.trendingTags) { tag ->
-                            TrendingTagChip(tag = tag, onClick = { onTagClick(tag) })
+                            TrendingTagChip(tag = tag, onClick = {
+                                // US-11: Record the click interaction
+                                UsabilityTracker.increaseClick()
+                                onTagClick(tag)
+                            })
                         }
                     }
                 }
@@ -275,6 +280,8 @@ fun CommentItem(
                                 val offset = result.getOffsetForPosition(pos)
                                 annotatedString.getStringAnnotations(tag = "TAG", start = offset, end = offset)
                                     .firstOrNull()?.let { annotation ->
+                                        // US-11: Record the click interaction for usability tracking
+                                        UsabilityTracker.increaseClick()
                                         onTagClick(annotation.item)
                                     }
                             }

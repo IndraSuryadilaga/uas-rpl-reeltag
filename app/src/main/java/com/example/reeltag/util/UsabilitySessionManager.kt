@@ -14,10 +14,14 @@ object UsabilitySessionManager {
 
     fun startOriginalSession() {
         _sessionMode.value = SessionMode.ORIGINAL
+        // PERBAIKAN: Memulai pencatatan task untuk mode Original
+        UsabilityTracker.startTask(SessionMode.ORIGINAL)
     }
 
     fun startReelTagSession() {
         _sessionMode.value = SessionMode.REELTAG
+        // PERBAIKAN: Memulai pencatatan task untuk mode ReelTag
+        UsabilityTracker.startTask(SessionMode.REELTAG)
     }
 
     fun isOriginalMode(): Boolean {
