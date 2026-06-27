@@ -21,13 +21,12 @@ fun HashtagChip(
 
         colors = AssistChipDefaults.assistChipColors(
             containerColor = Color.Transparent,
-            labelColor = Color(0xFF38BDF8)
+            labelColor = Color.White
         ),
 
         border = AssistChipDefaults.assistChipBorder(
             enabled = true,
-            borderColor = Color(0xFF38BDF8)
+            borderColor = Color.White
         )
     )
-
 }

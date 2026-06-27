@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.reeltag.ui.components.VideoPlayer
 import com.example.reeltag.ui.comment.CommentBottomSheet
@@ -82,7 +83,7 @@ fun ReelsScreen(
                     count = formatCount(reel.likes)
                 )
 
-                Spacer(modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
                 ReelAction(
                     icon = Icons.AutoMirrored.Filled.Chat,
@@ -90,14 +91,14 @@ fun ReelsScreen(
                     onClick = { showComments.value = true }
                 )
 
-                Spacer(modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
                 ReelAction(
                     icon = Icons.AutoMirrored.Filled.Send,
                     count = formatCount(reel.shares)
                 )
 
-                Spacer(modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
                 ReelAction(
                     icon = Icons.Default.BookmarkBorder,
@@ -122,13 +123,14 @@ fun ReelsScreen(
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .fillMaxWidth()
+                    .fillMaxWidth(0.8f)
                     .padding(16.dp)
             ) {
                 Text(
                     text = "@${reel.username}",
                     color = Color.White,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = reel.caption, color = Color.White)
@@ -155,7 +157,8 @@ fun ReelsScreen(
 
                 Text(
                     text = reel.music,
-                    color = Color.White
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }
@@ -169,21 +172,25 @@ private fun ReelAction(
     onClick: () -> Unit = {}
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         IconButton(
-            onClick = onClick
+            onClick = onClick,
+            modifier = Modifier.size(56.dp)
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = Color.White
+                tint = Color.White,
+                modifier = Modifier.size(34.dp)
             )
         }
         Text(
             text = count,
             color = Color.White,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

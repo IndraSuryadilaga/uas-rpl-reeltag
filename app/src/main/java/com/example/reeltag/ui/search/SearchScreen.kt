@@ -2,30 +2,33 @@ package com.example.reeltag.ui.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
@@ -73,27 +76,9 @@ fun SearchScreen(
                 color = Color.DarkGray
             )
 
-            SectionTitle(
-                title = "Recent Search"
-            )
-
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(uiState.recentSearches) { keyword ->
-                    HashtagChip(
-                        hashtag = keyword,
-                        onClick = {
-                            viewModel.selectRecentSearch(keyword)
-                        }
-                    )
-                }
-            }
-
             if (uiState.searchResults.isNotEmpty()) {
                 Spacer(
-                    modifier = Modifier.height(16.dp)
+                    modifier = Modifier.height(24.dp)
                 )
 
                 SectionTitle(
@@ -111,12 +96,12 @@ fun SearchScreen(
                             subtitle = "${reel.views} views"
                         )
                     }
-                } // Perbaikan: sebelumnya )
+                }
             }
 
             if (uiState.hashtags.isNotEmpty()) {
                 Spacer(
-                    modifier = Modifier.height(20.dp)
+                    modifier = Modifier.height(24.dp)
                 )
 
                 SectionTitle(
@@ -144,34 +129,49 @@ private fun SearchHeader(
     onQueryChange: (String) -> Unit,
     onBack: () -> Unit
 ) {
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        IconButton(
+            onClick = onBack
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = Color.White
+            )
+        }
+
         OutlinedTextField(
             value = query,
             onValueChange = onQueryChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.weight(1f),
             placeholder = {
-                Text("Search")
+                Text(text = "Search tag or reels...", color = Color.Gray)
             },
             leadingIcon = {
                 Icon(
-                    Icons.Default.Search,
-                    contentDescription = null
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                    tint = Color.Gray
                 )
             },
-            trailingIcon = {
-                IconButton(
-                    onClick = onBack
-                ) {
-                    Icon(
-                        Icons.Default.ArrowBack,
-                        contentDescription = null
-                    )
-                }
-            },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+                focusedContainerColor = Color(0xFF1A1A1A),
+                unfocusedContainerColor = Color(0xFF1A1A1A),
+                focusedBorderColor = Color.White,
+                unfocusedBorderColor = Color.DarkGray,
+                cursorColor = Color.White,
+                focusedLeadingIconColor = Color.White,
+                unfocusedLeadingIconColor = Color.Gray
+            ),
+            shape = RoundedCornerShape(12.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search

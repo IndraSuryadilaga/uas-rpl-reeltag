@@ -40,9 +40,6 @@ fun BottomNavigationBar(
                     contentDescription = "Home"
                 )
             },
-            label = {
-                Text("Home")
-            },
             colors = NavigationBarItemDefaults.colors(
                 selectedIconColor = Color.White,
                 unselectedIconColor = Color.Gray,
@@ -61,9 +58,6 @@ fun BottomNavigationBar(
                     contentDescription = "Search"
                 )
             },
-            label = {
-                Text("Search")
-            },
             colors = NavigationBarItemDefaults.colors(
                 selectedIconColor = Color.White,
                 unselectedIconColor = Color.Gray,
@@ -79,9 +73,6 @@ fun BottomNavigationBar(
                     imageVector = Icons.Outlined.SmartDisplay,
                     contentDescription = "Reels"
                 )
-            },
-            label = {
-                Text("Reels")
             },
             colors = NavigationBarItemDefaults.colors(
                 selectedIconColor = Color.White,
@@ -99,9 +90,6 @@ fun BottomNavigationBar(
                     imageVector = Icons.Outlined.Person,
                     contentDescription = "Profile"
                 )
-            },
-            label = {
-                Text("Profile")
             },
             colors = NavigationBarItemDefaults.colors(
                 selectedIconColor = Color.White,
